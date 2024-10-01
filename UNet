@@ -1,0 +1,9 @@
+from keras import layers, models
+
+def attention_unet(input_shape):
+    inputs = layers.Input(input_shape)
+    # Encoder, Attention blocks, and Decoder goes here
+    # This would be the typical U-Net with added attention blocks
+    outputs = layers.Conv2D(1, (1, 1), activation='sigmoid')(outputs)
+    model = models.Model(inputs, outputs)
+    return model

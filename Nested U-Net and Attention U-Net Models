@@ -1,0 +1,6 @@
+import segmentation_models as sm
+from keras.models import Model
+
+def build_unet_plus_plus(input_shape):
+    model = sm.Unet('resnet34', input_shape=input_shape, encoder_weights='imagenet')
+    return model

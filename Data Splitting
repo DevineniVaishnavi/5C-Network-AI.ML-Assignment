@@ -1,0 +1,36 @@
+import os
+from sklearn.model_selection import train_test_split
+import shutil
+
+# Define paths to your images and masks directories
+image_dir = '/path/to/images'
+mask_dir = '/path/to/masks'
+
+# Get all image and mask file names
+image_files = sorted(os.listdir(image_dir))
+mask_files = sorted(os.listdir(mask_dir))
+
+# Ensure there are no cases where an image or mask is missing
+images_with_masks = [img for img in image_files if img in mask_files]
+masks_with_images = [msk for msk in mask_files if msk in image_files]
+
+# Split dataset into 80% training and 20% testing
+train_images, test_images, train_masks, test_masks = train_test_split(
+    images_with_masks, masks_with_images, test_size=0.2, random_state=42
+)
+
+# Create directories for train/test splits
+os.makedirs('/path/to/train/images', exist_ok=True)
+os.makedirs('/path/to/train/masks', exist_ok=True)
+os.makedirs('/path/to/test/images', exist_ok=True)
+os.makedirs('/path/to/test/masks', exist_ok=True)
+
+# Move files to respective train/test directories
+for img in train_images:
+    shutil.copy(os.path.join(image_dir, img), '/path/to/train/images/')
+for msk in train_masks:
+    shutil.copy(os.path.join(mask_dir, msk), '/path/to/train/masks/')
+for img in test_images:
+    shutil.copy(os.path.join(image_dir, img), '/path/to/test/images/')
+for msk in test_masks:
+    shutil.copy(os.path.join(mask_dir, msk), '/path/to/test/masks/')

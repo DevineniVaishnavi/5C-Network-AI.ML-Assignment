@@ -1,0 +1,13 @@
+import cv2
+import numpy as np
+
+def apply_clahe(image_path):
+    img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)  # Read the image in grayscale
+    clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))  # Initialize CLAHE
+    cl1 = clahe.apply(img)  # Apply CLAHE
+    return cl1 / 255.0  # Normalize the image to [0, 1] range
+
+# Apply CLAHE to the images in the dataset
+for img_path in train_images + test_images:
+    processed_image = apply_clahe(img_path)
+    # Save or use the processed image further in training

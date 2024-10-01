@@ -1,0 +1,18 @@
+from keras.optimizers import Adam
+from keras.metrics import MeanIoU
+
+def dice_coef(y_true, y_pred):
+    smooth = 1.
+    y_true_f = K.flatten(y_true)
+    y_pred_f = K.flatten(y_pred)
+    intersection = K.sum(y_true_f * y_pred_f)
+    return (2. * intersection + smooth) / (K.sum(y_true_f) + K.sum(y_pred_f) + smooth)
+
+# Compile the model
+model.compile(optimizer=Adam(), loss='binary_crossentropy', metrics=[dice_coef])
+
+# Train the model
+model.fit(train_images, train_masks, validation_data=(test_images, test_masks), epochs=50)
+
+# Evaluate the model
+dice_score = model.evaluate(test_images, test_masks)
